@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -24,36 +23,47 @@
                 android:src="@drawable/logo_horizontal"/>
         </RelativeLayout>
 
-        <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right">
-
-        <ImageView
-            android:id="@+id/plus_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="11dp"
-            android:layout_marginRight="17dp"
-            android:src="@drawable/plus_icon" />
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left">
 
-        <ImageView
-            android:id="@+id/back_icon"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="14dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/back_icon" />
+            <ImageView
+                android:id="@+id/back_icon"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/back_icon" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
 
+    <TextView
+        android:id="@+id/englishTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apple"
+        android:textSize="35dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:textColor="#000000"/>
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:hint="뜻을 입력해주세요"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:layout_marginTop="100dp"
+        android:id="@+id/intentBtn"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorAccent"
+        android:text="next>" />
 </LinearLayout>

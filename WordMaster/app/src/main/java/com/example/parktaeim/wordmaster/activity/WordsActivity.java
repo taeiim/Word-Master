@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.parktaeim.wordmaster.R;
 /**
@@ -21,19 +23,17 @@ public class WordsActivity extends AppCompatActivity {
         //툴바
         setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
         getSupportActionBar().setTitle("");  //툴바 제목 설정 (제거)
-        //맨 왼쪽 뒤로가기 아이콘
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+        ImageView back_icon = (ImageView) findViewById(R.id.back_icon);
+        //뒤로가기 버튼 누르면
+        back_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();  //현재 화면 꺼지면서 전화면으로 돌아감
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //뒤로가기 누르면 화면 끝나고 메인으로
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }

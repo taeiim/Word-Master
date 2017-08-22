@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.parktaeim.wordmaster.R;
 import com.example.parktaeim.wordmaster.Realm.List;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,WordsActivity.class);
+                Intent intent = new Intent(MainActivity.this,TestActivity.class);
                 startActivity(intent);
             }
         });
