@@ -1,6 +1,7 @@
 package com.example.parktaeim.wordmaster.Realm;
 
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -9,12 +10,15 @@ import io.realm.annotations.PrimaryKey;
 
 public class Word extends RealmObject {
     public List list;
-    @PrimaryKey
+
     private String list_id;
 
     private String english;
 
     private String korean;
+
+    @PrimaryKey
+    String PK = list_id.toString()+","+english.toString();
 
 
     public String getList_id() {
@@ -41,7 +45,14 @@ public class Word extends RealmObject {
         this.korean = korean;
     }
 
-//
-//    RealmResults<Word> word = realm.where(Word.class).distinct("list_id");
+    public String getPK() {
+        return PK;
+    }
+
+    public void setPK(String PK) {
+        this.PK = PK;
+    }
+
+ //RealmResults<Word> word = realm.where(Word.class).distinct("list_id");
 
 }

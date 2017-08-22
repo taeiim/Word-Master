@@ -29,13 +29,10 @@ public class WordsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //뒤로가기 누르면 화면 끝나고 메인으로
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
-
-//            Intent intent = new Intent(WordsActivity.this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
         }
         return super.onOptionsItemSelected(item);
     }
