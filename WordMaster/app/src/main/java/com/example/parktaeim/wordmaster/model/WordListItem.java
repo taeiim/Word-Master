@@ -1,13 +1,21 @@
 package com.example.parktaeim.wordmaster.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by parktaeim on 2017. 8. 23..
  */
 
 public class WordListItem {
+
+
     private String title;
     private String describe;
     private int wordCount;
+
+
+
 
     public String getTitle() {
         return title;
