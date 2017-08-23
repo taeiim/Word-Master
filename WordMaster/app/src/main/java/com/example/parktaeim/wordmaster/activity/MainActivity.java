@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,8 +16,9 @@ import android.widget.TextView;
 import com.example.parktaeim.wordmaster.R;
 import com.example.parktaeim.wordmaster.Realm.List;
 import com.example.parktaeim.wordmaster.adapter.WordBookListAdapter;
-import com.example.parktaeim.wordmaster.adapter.WordListAdapter;
 
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -27,23 +29,31 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Realm realm;
+    public static final String TAG = MainActivity.class.getName();
+
     private ListView listView;
-    private com.example.parktaeim.wordmaster.adapter.WordBookListAdapter wordBookListAdapter;
+    private WordBookListAdapter wordBookListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        Realm.deleteRealm(realmConfiguration);
+        Realm.setDefaultConfiguration(realmConfiguration);
         //init(); //데이터 초기화
 
-        //툴바
+         //툴바
         setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
         getSupportActionBar().setTitle("");  //툴바 제목 설정 (제거)
 
+        //wordBookListAdapter = new WordBookListAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,);
         listView = (ListView)findViewById(R.id.WordBookListView);
 
-        wordBookListAdapter = new WordBookListAdapter(this);
-        listView.setAdapter(wordBookListAdapter);
+        //final WordBookListAdapter wordBookListAdapter = new WordBookListAdapter();
+
 
         Button button = (Button) findViewById(R.id.intentBtn);
 
@@ -55,17 +65,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //wordBookListAdapter.addItem("제목","ㅇ니ㅏㅇㄹㄴㅣㄹㅇ라ㅣ",98);
 
+
+        listView.setAdapter(wordBookListAdapter);
 
     }
 
+
+
+
 //    //데이터 초기화
 //    private void init(){
-////        Context context ;
-//        //RealmConfiguration config = new RealmConfiguration.Builder(context).build();
-//        ///realm = Realm.getInstance(config);
+//        Context context ;
+//        RealmConfiguration config = new RealmConfiguration.Builder(context).build();
+//        realm = Realm.getInstance(config);
 //
-//        //realm = Realm.getInstance(this);
+//        realm = Realm.getInstance(this);
 //
 //        RealmResults<List> wordBookList = getUserList();
 //       Log.i(TAG, ">>>>> wordBookList.size : " + wordBookList.size());

@@ -23,6 +23,9 @@
         <activity android:name=".activity.WordsActivity"></activity>
         <activity android:name=".activity.TestActivity"></activity>
         <activity android:name=".activity.ResultActivity"></activity>
+
+
     </application>
+
 
 </manifest>
