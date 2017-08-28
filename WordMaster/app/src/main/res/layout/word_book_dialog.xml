@@ -15,6 +15,7 @@
         android:textSize="17dp"/>
 
     <EditText
+        android:id="@+id/titleEditText"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"/>
@@ -27,6 +28,7 @@
         android:textSize="17dp"/>
 
     <EditText
+        android:id="@+id/descEditText"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"/>
