@@ -11,7 +11,6 @@ import io.realm.annotations.PrimaryKey;
 
 public class Word extends RealmObject {
     //Realm realm;
-    public List list;
 
     private int list_id;
 
@@ -20,7 +19,7 @@ public class Word extends RealmObject {
     private String korean;
 
     @PrimaryKey
-    String PK;
+    private String PK;
 
 //    public Word(int list_id, String english, String korean) {
 //        this.list_id = list_id;
@@ -61,9 +60,9 @@ public class Word extends RealmObject {
         this.PK = PK;
     }
 
-    public void addKorMeaning(String korean) {
-        this.korean += ", " + korean;
-    }
+//    public void addKorMeaning(String korean) {
+//        this.korean += ", " + korean;
+//    }
 
     //외래키
     //RealmResults<Word> word = realm.where(Word.class).distinct("list_id");

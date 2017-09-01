@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="5dp"
-    android:layout_margin="15dp">
+    android:layout_margin="15dp"
+    android:id="@+id/wordBookCardView">
 
    <RelativeLayout
         android:layout_width="match_parent"

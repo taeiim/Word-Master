@@ -1,6 +1,7 @@
 package com.example.parktaeim.wordmaster.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmObject;
@@ -25,5 +26,18 @@ public class RealmRecyclerViewAdapter<T extends RealmObject> extends RecyclerVie
     }
 
 
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return null;
+    }
 
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
+    }
 }

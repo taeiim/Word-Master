@@ -10,20 +10,20 @@ import io.realm.annotations.PrimaryKey;
  * Created by parktaeim on 2017. 8. 22..
  */
 
-public class List extends RealmObject {
+public class BookList extends RealmObject {
 
     @PrimaryKey
-    private int list_id;
+    private String list_id;
 
     private String title;
     private String describe;
-    private Date createdAt;
+    private String createdAt;
 
-    public int getList_id() {
+    public String getList_id() {
         return list_id;
     }
 
-    public void setList_id(int list_id) {
+    public void setList_id(String list_id) {
         this.list_id = list_id;
     }
 
@@ -43,11 +43,11 @@ public class List extends RealmObject {
         this.describe = describe;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
