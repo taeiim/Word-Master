@@ -21,49 +21,52 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.parktaeim.wordmaster.R;
-import com.example.parktaeim.wordmaster.adapter.BookDataAdapter;
-import com.example.parktaeim.wordmaster.adapter.RealmBookDataAdapter;
-
+import com.example.parktaeim.wordmaster.adapter.WordBookRealmAdapter;
+import com.example.parktaeim.wordmaster.model.WordBook;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import io.realm.Realm;
 
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
+import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private Realm mRealm = null;
-    private BookDataAdapter mAdapter;
-    private List<com.example.parktaeim.wordmaster.Realm.BookList> mDataList = new ArrayList<>();
-    private LinearLayoutManager mLayoutManager;
-    private RealmResults<com.example.parktaeim.wordmaster.Realm.BookList> BookModelDb;
-    private RealmBookDataAdapter realmBookDataAdapter;
-
     private String title;
     private String describe;
 
-    RecyclerView mRecyclerView;
+    private Realm realm;
+
+    RealmRecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        realm = Realm.getInstance(this);
+        RealmResults<WordBook> wordBooksItems = realm
+                .where(WordBook.class)
+                .findAllSorted("list_id");
+
+        WordBookRealmAdapter wordBookRealmAdapter = new WordBookRealmAdapter(this,wordBooksItems,true,true);
+        RealmRecyclerView realmRecyclerView = (RealmRecyclerView) findViewById(R.id.WordBookRecyclerView);
+        realmRecyclerView.setAdapter(wordBookRealmAdapter);
+
+
         ButterKnife.bind(this);
 
-        mRealm = Realm.getDefaultInstance();
         setToolbar();  //툴바 세팅
-        setupRecyclerView();
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.WordBookRecyclerView);
 
         Button button = (Button) findViewById(R.id.intentBtn);
         ImageView plus_icon = (ImageView) findViewById(R.id.plus_icon);
@@ -85,7 +88,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 
     private void setToolbar() {
@@ -116,11 +124,10 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(titleEditText.length() == 0 || descEditText.length() == 0){   //제목이나 요약 입력값이 없으면 다시 작성해달라는 토스트
+                if( titleEditText == null || descEditText == null||titleEditText.length() == 0 || descEditText.length() == 0 ){   //제목이나 요약 입력값이 없으면 다시 작성해달라는 토스트
                     Toast.makeText(MainActivity.this, "다시 작성해주세요!",Toast.LENGTH_SHORT).show();
                 }else {
-                    title = titleEditText.getText().toString();      // 제목 저장
-                    describe = descEditText.getText().toString();    // 요약 저장
+                    addWordBookItem(titleEditText.getText().toString(),descEditText.getText().toString());
                 }
             }
         });
@@ -136,140 +143,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void tampilkanDialogTambah(){
-//        String titleBtn = "Simpan";
-//        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-//
-//        View itemView = inflater.inflate(R.layout.word_book_dialog,null);
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//
-//        builder.setView(itemView);
-//
-//        final EditText titleInput = (EditText) itemView.findViewById(R.id.titleEditText);
-//        final EditText descInput = (EditText) itemView.findViewById(R.id.descEditText);
-//
-//        builder.setCancelable(false).setPositiveButton(titleBtn, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                if(titleInput.length() == 0 || descInput.length() == 0){
-//                    Toast.makeText(MainActivity.this, "다시 작성해주세요 ", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    title = titleInput.getText().toString();
-//                    describe = descInput.getText().toString();
-//
-//
-//                }
-//            }
-//        });
-//
-//    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        BookModelDb = mRealm.where(com.example.parktaeim.wordmaster.Realm.BookList.class).findAll();
-        realmBookDataAdapter = new RealmBookDataAdapter(MainActivity.this,BookModelDb,true);
+    private void addWordBookItem(String title, String describe){
+        if (title == null || title.length() ==0 ||describe == null || describe.length() ==0 ){
+            Toast.makeText(MainActivity.this, "다시 작성해주세요!",Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        mAdapter.setRealmBaseAdapter(realmBookDataAdapter);
-        mAdapter.notifyDataSetChanged();
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
 
+
+        realm.beginTransaction();
+        WordBook wordBook = realm.createObject(WordBook.class);
+        wordBook.setList_id(System.currentTimeMillis());
+        wordBook.setTitle(title);
+        wordBook.setDesc(describe);
+        realm.commitTransaction();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setupRecyclerView(){
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(MainActivity.this);
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new BookDataAdapter(MainActivity.this);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mAdapter.ubahData(new BookDataAdapter.UbahDataInterface(){
-            @Override
-            public void ubahData(View view, int position) {
-                dapatkanData(view, BookModelDb.get(position));
-            }
-        });
-        mAdapter.hapusData(new BookDataAdapter.HapusDataInterface(){
-            @Override
-            public void hapusData(View view, int position) {
-                menghapusData(position);
-                mAdapter.notifyDataSetChanged();
-
-            }
-        });
-
-
-    }
-
-
-    //데이터 가져오기
-    private void dapatkanData(View view, com.example.parktaeim.wordmaster.Realm.BookList list){
-        String id = list.getList_id();
-        title = list.getTitle();
-        describe = list.getDescribe();
-    }
-
-    //id 시간으로
-    private String dapatkanId(){
-        String dateTime = "";
-        Calendar c = Calendar.getInstance();
-        System.out.println("Current Time = &gt; "+c.getTime());
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateTime = df.format(c.getTime());
-
-        return dateTime;
-    }
-
-
-    //삭제
-    private void menghapusData(int position){
-        mRealm.beginTransaction();
-
-        BookModelDb.remove(position);
-        mRealm.commitTransaction();
-    }
-
-    private void ubahData(String id, String title, String describe, String date){
-        mRealm.beginTransaction();
-
-
-        com.example.parktaeim.wordmaster.Realm.BookList dataModel = mRealm.where(com.example.parktaeim.wordmaster.Realm.BookList.class).equalTo("id",id).findFirst();
-
-        dataModel.setTitle(title);
-        dataModel.setDescribe(describe);
-        dataModel.setCreatedAt(date);
-
-        mRealm.commitTransaction();
-    }
-
-
-    //추가
-    private void tambahData(){
-        mRealm.beginTransaction();
-
-        com.example.parktaeim.wordmaster.Realm.BookList list = mRealm.createObject(com.example.parktaeim.wordmaster.Realm.BookList.class);
-        list.setList_id(dapatkanId());
-        list.setTitle(title);
-        list.setDescribe(describe);
-        String date = list.getList_id().toString();
-        list.setCreatedAt(date);
-
-        mRealm.commitTransaction();
-    }
-
-
 
 
 }

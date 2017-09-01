@@ -55,14 +55,15 @@
         android:padding="10dp"
         android:textColor="#000000" />
 
-    <android.support.v7.widget.RecyclerView
+    <co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView
         android:padding="10dp"
         android:id="@+id/WordBookRecyclerView"
-        android:background="@null"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="400dp"
+        app:rrvIsRefreshable="true"
+        app:rrvLayoutType="LinearLayout">
 
-    </android.support.v7.widget.RecyclerView>
+    </co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView>
 
     <Button
         android:id="@+id/intentBtn"
