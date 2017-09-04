@@ -52,9 +52,5 @@ public class WordBookRealmAdapter extends RealmBasedRecyclerViewAdapter<WordBook
         final WordBook wordBookItem = realmResults.get(position);
         viewHolder.titleTextView.setText(wordBookItem.getTitle());
         viewHolder.descTextView.setText(wordBookItem.getDesc());
-//
-//        viewHolder.itemView.setBackgroundColor(
-//                COLORS[(int) (toDoItem.getId() % COLORS.length)]
-//        );
     }
 }

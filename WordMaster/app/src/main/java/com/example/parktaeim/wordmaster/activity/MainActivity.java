@@ -1,8 +1,10 @@
 package com.example.parktaeim.wordmaster.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
@@ -23,17 +25,12 @@ import android.widget.Toast;
 import com.example.parktaeim.wordmaster.R;
 import com.example.parktaeim.wordmaster.adapter.WordBookRealmAdapter;
 import com.example.parktaeim.wordmaster.model.WordBook;
+import com.getkeepsafe.relinker.ReLinker;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import io.realm.Realm;
-
 import butterknife.ButterKnife;
 import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
-import io.realm.RealmBasedRecyclerViewAdapter;
 import io.realm.RealmResults;
 import io.realm.RealmConfiguration;
 
@@ -52,7 +49,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        realm = Realm.getInstance(this);
+
+        Realm.init(getApplicationContext());
+        realm = Realm.getDefaultInstance();
+
+        //realm = Realm.getInstance(this);
+
+//        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext()).build();
+//        realm = Realm.getInstance(config);
+
+//        Realm.init(getApplicationContext());
+//        RealmConfiguration realmConfig = new RealmConfiguration.Builder().name("realm").build();
+//        realm = Realm.getInstance(realmConfig);
+
+//        ReLinker.loadLibrary(getApplicationContext(),"mylibrary","1.0");
+
+//        Realm.init(getApplicationContext());
+//        realm = Realm.getDefaultInstance();
+//
+
         RealmResults<WordBook> wordBooksItems = realm
                 .where(WordBook.class)
                 .findAllSorted("list_id");
