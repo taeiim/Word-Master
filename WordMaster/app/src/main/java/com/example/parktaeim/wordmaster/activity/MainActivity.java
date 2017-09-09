@@ -1,44 +1,28 @@
 package com.example.parktaeim.wordmaster.activity;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parktaeim.wordmaster.R;
 import com.example.parktaeim.wordmaster.adapter.WordBookRealmAdapter;
 import com.example.parktaeim.wordmaster.model.WordBook;
-import com.getkeepsafe.relinker.ReLinker;
-
-import java.util.Date;
 
 import io.realm.Realm;
 import butterknife.ButterKnife;
-import co.moonmonkeylabs.realmrecyclerview.RealmRecyclerView;
 import io.realm.RealmResults;
-import io.realm.RealmConfiguration;
 import io.realm.Sort;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
         realmRecyclerView = (RecyclerView) findViewById(R.id.WordBookRecyclerView);
 
+        registerForContextMenu(realmRecyclerView);
         setUpRecyclerView();
 
         ButterKnife.bind(this);
 
         setToolbar();  //툴바 세팅
-
 
         Button button = (Button) findViewById(R.id.intentBtn);
         ImageView plus_icon = (ImageView) findViewById(R.id.plus_icon);
@@ -93,12 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void setUpRecyclerView() {
-        wordBookRealmAdapter= new WordBookRealmAdapter(realm.where(WordBook.class).findAllSorted("list_id", Sort.DESCENDING));
+        wordBookRealmAdapter = new WordBookRealmAdapter(realm.where(WordBook.class).findAllSorted("list_id", Sort.DESCENDING));
         realmRecyclerView.setAdapter(wordBookRealmAdapter);
         realmRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         realmRecyclerView.setHasFixedSize(true);
-        realmRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         wordBookRealmAdapter.notifyDataSetChanged();
 
     }
@@ -135,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         btn_add_wordBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    addWordBookItem(titleEditText.getText().toString(), descEditText.getText().toString());
+                addWordBookItem(titleEditText.getText().toString(), descEditText.getText().toString());
 
             }
         });
@@ -153,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void addWordBookItem(String title, String describe) {
-        if (title == null || title.length() ==0 ||describe == null || describe.length() ==0 ){
-            Toast.makeText(MainActivity.this, "다시 작성해주세요!",Toast.LENGTH_SHORT).show();
+        if (title == null || title.length() == 0 || describe == null || describe.length() == 0) {
+            Toast.makeText(MainActivity.this, "다시 작성해주세요!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -163,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(wordBooksItems.size());
 
         realm.beginTransaction();
-        WordBook wordBook = realm.createObject(WordBook.class,System.currentTimeMillis());
+        WordBook wordBook = realm.createObject(WordBook.class, System.currentTimeMillis());
         wordBook.setTitle(title);
         wordBook.setDesc(describe);
         realm.commitTransaction();
@@ -171,9 +155,5 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(wordBooksItems.size());
 
-
-
     }
-
-
 }
