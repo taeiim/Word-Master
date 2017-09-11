@@ -20,16 +20,15 @@ import com.example.parktaeim.wordmaster.R;
 import com.example.parktaeim.wordmaster.adapter.WordBookRealmAdapter;
 import com.example.parktaeim.wordmaster.model.WordBook;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import butterknife.ButterKnife;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private String title;
-    private String describe;
 
     Dialog bookAddDialog;
     private Realm realm;
@@ -136,21 +135,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void addWordBookItem(String title, String describe) {
+    private void addWordBookItem(final String title, final String describe) {
+        //edittext 값이 비면 다시 작성해달라는 토스트 띄워주기
         if (title == null || title.length() == 0 || describe == null || describe.length() == 0) {
             Toast.makeText(MainActivity.this, "다시 작성해주세요!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         wordBooksItems = realm.where(WordBook.class).findAll();
-
         System.out.println(wordBooksItems.size());
 
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                WordBook wordBook = realm.createObject(WordBook.class, System.currentTimeMillis());
+//                  wordBook.setTitle(title);
+//                wordBook.setDesc(describe);
+//            }
+//        });
         realm.beginTransaction();
         WordBook wordBook = realm.createObject(WordBook.class, System.currentTimeMillis());
         wordBook.setTitle(title);
         wordBook.setDesc(describe);
         realm.commitTransaction();
+
+//        wordBooksItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<WordBook>>() {
+//            @Override
+//            public void onChange(RealmResults<WordBook> wordBooks, OrderedCollectionChangeSet changeSet) {
+//                changeSet.getInsertions();
+//            }
+//        });
         bookAddDialog.dismiss();
 
         System.out.println(wordBooksItems.size());

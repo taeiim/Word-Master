@@ -38,15 +38,15 @@ import static android.media.CamcorderProfile.get;
  * Created by parktaeim on 2017. 9. 1..
  */
 
-public class WordBookRealmAdapter extends RealmRecyclerViewAdapter<WordBook,WordBookRealmAdapter.ViewHolder> {
+public class WordBookRealmAdapter extends RealmRecyclerViewAdapter<WordBook, WordBookRealmAdapter.ViewHolder> {
 
     Context context;
     Realm realm;
     protected OrderedRealmCollection<WordBook> items;
     private RecyclerView mAttechedRecyclerView;
-    long getID;
+    long ID;
 
-    public class ViewHolder extends RealmViewHolder implements View.OnCreateContextMenuListener,MenuItem.OnMenuItemClickListener {
+    public class ViewHolder extends RealmViewHolder implements View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
         public CardView cardView;
         public TextView titleTextView;
@@ -78,11 +78,11 @@ public class WordBookRealmAdapter extends RealmRecyclerViewAdapter<WordBook,Word
 
         }
 
-        public void delete (long ID){
-            final WordBook wordBookItem  = items.get(position);
-            getID = wordBookItem.getList_id();
+        public void delete() {
+            final WordBook wordBookItem = items.get(position);
+            ID = wordBookItem.getList_id();
             realm = Realm.getDefaultInstance();
-            final RealmResults<WordBook> results = realm.where(WordBook.class).equalTo("list_id",ID).findAll();
+            final RealmResults<WordBook> results = realm.where(WordBook.class).equalTo("list_id", ID).findAll();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -94,14 +94,14 @@ public class WordBookRealmAdapter extends RealmRecyclerViewAdapter<WordBook,Word
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            delete(getID);
+            delete();
             return true;
         }
 
     }
 
-    public WordBookRealmAdapter(OrderedRealmCollection<WordBook> data){
-        super(data,true);
+    public WordBookRealmAdapter(OrderedRealmCollection<WordBook> data) {
+        super(data, true);
         this.items = data;
         setHasStableIds(true);
     }
@@ -114,7 +114,7 @@ public class WordBookRealmAdapter extends RealmRecyclerViewAdapter<WordBook,Word
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.wordsbookliist_custom,mAttechedRecyclerView,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.wordsbookliist_custom, mAttechedRecyclerView, false);
         ViewHolder vh = new ViewHolder((CardView) v);
         return vh;
     }
