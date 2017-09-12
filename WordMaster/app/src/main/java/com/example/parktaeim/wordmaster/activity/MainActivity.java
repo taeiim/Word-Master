@@ -72,15 +72,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
 
     private void setUpRecyclerView() {
         wordBookRealmAdapter = new WordBookRealmAdapter(realm.where(WordBook.class).findAllSorted("list_id", Sort.DESCENDING));
         realmRecyclerView.setAdapter(wordBookRealmAdapter);
-        realmRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        realmRecyclerView.setLayoutManager(layoutManager);
+
+        //realmRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         realmRecyclerView.setHasFixedSize(true);
         wordBookRealmAdapter.notifyDataSetChanged();
 
@@ -131,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
@@ -145,26 +149,12 @@ public class MainActivity extends AppCompatActivity {
         wordBooksItems = realm.where(WordBook.class).findAll();
         System.out.println(wordBooksItems.size());
 
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                WordBook wordBook = realm.createObject(WordBook.class, System.currentTimeMillis());
-//                  wordBook.setTitle(title);
-//                wordBook.setDesc(describe);
-//            }
-//        });
         realm.beginTransaction();
         WordBook wordBook = realm.createObject(WordBook.class, System.currentTimeMillis());
         wordBook.setTitle(title);
         wordBook.setDesc(describe);
         realm.commitTransaction();
 
-//        wordBooksItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<WordBook>>() {
-//            @Override
-//            public void onChange(RealmResults<WordBook> wordBooks, OrderedCollectionChangeSet changeSet) {
-//                changeSet.getInsertions();
-//            }
-//        });
         bookAddDialog.dismiss();
 
         System.out.println(wordBooksItems.size());
